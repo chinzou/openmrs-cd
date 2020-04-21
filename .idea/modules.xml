@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/docker/openmrs-cd.docker.iml" filepath="$PROJECT_DIR$/.idea/modules/docker/openmrs-cd.docker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jenkins/openmrs-cd.jenkins.iml" filepath="$PROJECT_DIR$/.idea/modules/jenkins/openmrs-cd.jenkins.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/node-scripts/openmrs-cd.node-scripts.iml" filepath="$PROJECT_DIR$/.idea/modules/node-scripts/openmrs-cd.node-scripts.iml" />
+    </modules>
+  </component>
+</project>

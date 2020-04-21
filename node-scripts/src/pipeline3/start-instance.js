@@ -58,7 +58,8 @@ if (process.env[config.varArtifactsChanges()] === "true") {
 // 'deployment'
 var container = scripts[instanceDef.deployment.type];
 
-if (process.env[config.varDeploymentChanges()] === "true") {
+if (process.env[config.varDeploymentChanges()] === "true") { // Do we have to delete container on every change?
+  
   script.body.push(scripts.remote(ssh, container.remove(instanceDef.uuid)));
   var mounts = {
     "/mnt": hostDir

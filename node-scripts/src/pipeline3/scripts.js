@@ -166,12 +166,23 @@ module.exports = {
 
     return script;
   },
+  gitClone: function(repo, destPath, commitId) {
+    var script = "";
+
+    script += "git clone " + repo + " " + destPath;
+    script += "\n";
+    if (commitId) {
+      script += "cd " + destPath + "&& git checkout " + commitId;
+      script += "\n";
+    }
+    return script;
+  },
 
   /*
    * Generates a script that fetches an instance's artifacts to save them a specified location.
    *
    * @param {Object} artifact - An 'artifact' section of the artifacts part of the instance definition.
-   * @param {String} destPath - The destination part where to save the fecthed artifact.
+   * @param {String} destPath - The destination part where to save the fetched artifact.
    *
    * @return {String} The script as a string.
    */

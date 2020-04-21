@@ -327,8 +327,8 @@ module.exports = {
       module.exports.getArtifactDependenciesConfigFileName()
     );
   },
-  getBuildJsScriptName: function() {
-    return "build.js";
+  getCDDockerDirPath: function(instanceUuid) {
+    return path.resolve(process.env.WORKSPACE, instanceUuid, "docker");
   },
   /**
    * The path whereto artifacts of an instance are fetched on the CD server.

@@ -4,12 +4,104 @@ const _ = require("lodash");
 
 const cst = require("../../const");
 const heredoc_2 = cst.HEREDOC_2;
-
+const scripts = require("../scripts")
 /*
  * Implementation of script utils to specifically manipulate Docker containers.
  *
  */
 module.exports = {
+  // PreHost Preparation
+  preHostPreparation: {
+    getDeploymentScript: function(instanceDef) {
+      // TODO: 'docker' deployment should fetch image at this stage and load it at hostPreparation stage
+      // Similar to what is done on 'docker-compose'
+      return "";
+    },
+    getDataScript: function(instanceDef) {
+      return "";
+    },
+    getArtifactsScript: function(instanceDef) {
+      return "";
+    }
+  },
+  // Host Preparation
+  hostPreparation: {
+    getDeploymentScript: function(instanceDef) {
+
+      var script = require("../scripts").remote(
+          instanceDef.deployment.host.value,
+          require("./docker").pull(instanceDef.deployment.value.image, instanceDef.deployment.value.tag)
+      );
+      return script;
+    },
+    getDataScript: function(instanceDef) {
+      return "";
+    },
+    getArtifactsScript: function(instanceDef) {
+      return "";
+    }
+  },
+  // Start Instance
+  startInstance: {
+    getDeploymentScript: function(instanceDef) {
+      var scripts = require("../scripts");
+      var container = require("./docker");
+      var ssh = instanceDef.deployment.host.value;
+      var script = "";
+      script += scripts.remote(ssh, container.remove(instanceDef.uuid));
+      script += "\n";
+      var mounts = {
+        "/mnt": instanceDef.deployment.hostDir
+      };
+
+      var setTLS = "";
+
+      if (!_.isEmpty(instanceDef.deployment.tls)) {
+        var tls = instanceDef.deployment.tls;
+        if (tls.type === "file") {
+          mounts[
+            scripts.trailSlash(tls.value.keysFolder, false)
+          ] = scripts.trailSlash(tls.value.hostKeysFolder, false);
+        }
+        setTLS += scripts.remote(
+          ssh,
+          container.exec(
+            instanceDef.uuid,
+            scripts.logInfo("Configuring TLS certs") +
+              tls.value.webServerUpdateScript +
+              " " +
+              tls.value.webServerConfFile +
+              " " +
+              scripts.trailSlash(tls.value.keysFolder, true) +
+              tls.value.privateKeyFilename +
+              " " +
+              scripts.trailSlash(tls.value.keysFolder, true) +
+              tls.value.publicCertFilename +
+              " " +
+              scripts.trailSlash(tls.value.keysFolder, true) +
+              tls.value.chainCertsFilename
+          )
+        );
+      }
+
+      script += scripts.remote(
+        ssh,
+        container.run(instanceDef.uuid, instanceDef, mounts)
+      );
+      script += "\n";
+      script += setTLS;
+      script += "\n";
+
+      return script;
+    },
+    getDataScript: function(instanceDef) {
+      return "";
+    },
+    getArtifactsScript: function(instanceDef) {
+      return "";
+    }
+  },
+
   /*
      * Util function that wraps the passed commands so each is applied either accordingly.
      *
