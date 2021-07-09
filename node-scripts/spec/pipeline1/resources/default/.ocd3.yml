@@ -1,7 +1,12 @@
 version: 1
 
+type: maven
+
 build:
   bash_commands: "mvn clean install -B"
 deploy:
   bash_commands: "./scripts/deploy.sh"
+  artifact: maven
+    version:
+
   artifacts_path: "./target"

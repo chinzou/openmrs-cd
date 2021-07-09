@@ -233,7 +233,7 @@ describe("Tests suite for pipeline1", function() {
         config.getJobNameForPipeline1() +
         "/resources/" +
         projectType +
-        "/.ocd3.yaml"
+        "/.ocd3.yml"
     );
     projectBuild.projectConfigFile = yamlConfigFile;
 

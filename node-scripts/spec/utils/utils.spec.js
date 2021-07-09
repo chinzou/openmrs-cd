@@ -47,7 +47,7 @@ describe("Utils", function() {
   });
 
   it("should get config", function() {
-    var file_ = __dirname + "/../pipeline1/resources/default/.ocd3.yaml";
+    var file_ = __dirname + "/../pipeline1/resources/default/.ocd3.yml";
     var config = utils.getProjectConfig(file_);
     expect(config).toBeDefined();
   });

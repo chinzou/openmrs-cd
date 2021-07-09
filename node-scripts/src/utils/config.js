@@ -112,7 +112,7 @@ module.exports = {
     );
   },
   getConfigBuildPath: function() {
-    return path.resolve(process.env.WORKSPACE, ".ocd3.yaml");
+    return path.resolve(process.env.WORKSPACE, ".ocd3.yml");
   },
   getBuildDirPath: function() {
     // https://stackoverflow.com/a/48712627/321797
